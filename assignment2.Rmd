@@ -1,0 +1,118 @@
+---
+title: "Assignment2"
+author: "Shaoyang Zhuang"
+date: "2023-10-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load packages
+
+
+```{r cars}
+# Install the packages if not already installed
+if (!requireNamespace("Stat2Data", quietly = TRUE)) {
+  install.packages("Stat2Data")
+}
+
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+
+# Load the packages
+library(Stat2Data)
+library(tidyverse)
+data("Hawks")
+head(Hawks)
+```
+
+## 1.Data Wrangling
+
+This part is mainly about data wrangling. Basic concepts of data wrangling can be found in lecture 4.
+
+## 1.1Select and filter
+
+## 1.1 (Q1)
+Use a combination of the select() and filter() functions to generate a data frame called “hSF” which
+is a sub-table of the original Hawks data frame, such that
+
+```{r pressure, echo=FALSE}
+hSF<-Hawks %>% select(Species,Wing,Weight,Tail)%>%filter(Species=="RT"&Weight>=1)
+head(hSF)
+```
+## 1.1 (Q2)
+
+```{r}
+num_obeservation<-nrow(hSF)
+num_obeservation
+num_variables<-ncol(hSF)
+num_variables
+```
+## 1.2The arrange function
+## 1.2(Q1)
+```{r}
+sort_hSF<-hSF%>%arrange(Wing)
+head(sort_hSF)
+```
+
+## 1.3Join and rename functions
+## 1.3(Q1)
+```{r}
+hawkSpeciesNameCodes<-data.frame(
+   species_code=c("CH", "RT", "SS"),
+   species_name_full=c("Cooper's", " Red-tailed", " Sharp-shinned")
+)
+head(hawkSpeciesNameCodes)
+
+```
+
+## 1.3(Q2)
+```{r}
+hawksFullName <- left_join(Hawks, hawkSpeciesNameCodes, by = c("Species" = "species_code"))%>%select(species_name_full,Wing,Weight,Tail)
+head(hawksFullName, n=7)
+
+```
+
+## 1.4(Q1)
+```{r}
+hawksWithBMI<-Hawks%>%mutate(`Bird-BMI` =(Weight/(Wing^2))*1000)%>%select( Species ,`Bird-BMI`)%>%arrange(desc(`Bird-BMI`))
+head(hawksWithBMI,n=8)
+
+````
+
+
+## 1.5(Q1)
+```{r}
+summary_table<-hawksFullName%>%group_by(species_name_full)%>%summarise(num_rows=n(),mn_wing=mean(Wing), md_wing=median(Wing), t_mn_wing=mean(Wing,trim=0.1), b_wt_ratio=max(Wing/Tail)
+)
+summary_table
+```
+
+
+
+
+
+## 1.5(Q2)
+```{r}
+
+
+hawksFullName <- left_join(Hawks, hawkSpeciesNameCodes, by = c("Species" = "species_code"))%>%select(species_name_full,Wing, Weight, Culmen, Hallux, Tail, StandardTail, Tarsus,  Crop)
+summary_table2<-hawksFullName%>%group_by(species_name_full)%>%summarise(Wing=sum(is.na(Wing)),Weight=sum(is.na(Weight)),Culmen=sum(is.na(Culmen)),Hallux=sum(is.na(Hallux)),Tail=sum(is.na(Tail)),StandardTail=sum(is.na(StandardTail)),Tarsus=sum(is.na(Tarsus)),Crop=sum(is.na(Crop)))
+summary_table2
+```
+
+
+
+
+
+
+
+## 1.2(Q1)## 1.2The arrange function
+## 1.2(Q1)## 1.2The arrange function
+## 1.2(Q1)## 1.2The arrange function
+## 1.2(Q1)## 1.2The arrange function
+## 1.2(Q1)## 1.2The arrange function
+## 1.2(Q1)
