@@ -1,0 +1,242 @@
+---
+title: "Assignment3"
+author: "Shaoyang Zhuang"
+date: "2023-10-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##1
+
+```{r cars}
+library(tidyverse)
+library(Stat2Data)
+data("Hawks")
+head(Hawks)
+
+```
+
+
+
+## 1.1(Q1)
+```{r cars}
+HawksTail<-Hawks$Tail
+head(HawksTail)
+sample_mean <- mean(HawksTail)
+cat("mean is ", sample_mean, "\n")
+sample_median <- median(HawksTail)
+cat("median is ",sample_median,"\n")
+```
+## 1.2(Q1)
+```{r}
+result <- Hawks %>% summarise(
+  wing_mean<-mean(Wing, na.rm = TRUE),
+  Wing_t_mean<-mean(Wing, trim = 0.5, na.rm = TRUE),
+  Wing_med<-median(Wing, na.rm = TRUE),
+  Weight_mean<-mean(Weight, na.rm = TRUE),
+  Weight_t_mean<-mean(Weight, trim = 0.5, na.rm = TRUE),
+  Weight_med<-median(Weight, na.rm = TRUE)
+)
+print(result)
+```
+
+## 1.2(Q2)
+```{r}
+result <- Hawks %>%
+  group_by(Species) %>%
+  summarize(
+  wing_mean<-mean(Wing, na.rm = TRUE),
+  Wing_t_mean<-mean(Wing, trim = 0.5, na.rm = TRUE),
+  Wing_med<-median(Wing, na.rm = TRUE),
+  Weight_mean<-mean(Weight, na.rm = TRUE),
+  Weight_t_mean<-mean(Weight, trim = 0.5, na.rm = TRUE),
+  Weight_med<-median(Weight, na.rm = TRUE)
+  )
+# Print the result
+print(result)
+```
+
+## 1.3(Q1)
+```{r}
+a = 2
+b = 3
+result1 <- mean(HawksTail*a + b)
+result2 <- a*mean(HawksTail) + b
+result1
+result2
+```
+
+## 1.3(Q2)
+```{r}
+a = 2
+b = 3
+result1 <- var(HawksTail*a + b)
+result2 <- sd(HawksTail)
+result1
+result2
+
+```
+
+
+## 1.3(Q3)
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+## 1.4
+```{r}
+hal<-Hawks$Hallux # Extract the vector of hallux lengths
+hal<-hal[!is.na(hal)] # Remove any nans
+outlier_val<-100
+num_outliers<-10
+corrupted_hal<-c(hal,rep(outlier_val,times=num_outliers))
+mean(hal)
+mean(corrupted_hal)
+```
+## 1.4
+```{r}
+num_outliers_vect <- seq(0,1000)
+means_vect <- c()
+for(num_outliers in num_outliers_vect){
+  corrupted_hal <- c(hal,rep(outlier_val,times=num_outliers))
+  means_vect <- c(means_vect, mean(corrupted_hal))
+}
+```
+## 1.4(Q1)
+```{r}
+medians_vect <- c()
+
+for( i in num_outliers_vect){
+  corrupted_hal <- c(hal, rep(outlier_val, times = i ))
+  medians_vect <- c(medians_vect, mean(corrupted_hal))
+}
+
+```
+## 1.4(Q2)
+```{r}
+# Define the trim fraction q
+q <- 0.1
+
+# Create vectors to store medians and trimmed means
+medians_vect <- c()
+t_means_vect <- c()
+
+# Loop through different numbers of outliers
+for(i in num_outliers_vect) {
+  # Create a vector with i - 1 outliers
+  
+  
+  # Combine the outliers with the original data
+  corrupted_hal <- c(hal, rep(outlier_val, times = i ))
+  
+  # Calculate the median and add it to the medians vector
+  medians_vect <- c(medians_vect, median(corrupted_hal))
+  
+  # Calculate the trimmed mean with trim fraction q and add it to the t_means vector
+  t_means_vect <- c(t_means_vect, mean(corrupted_hal, trim = q))
+}
+
+# Now you have two vectors: medians_vect and t_means_vect
+
+```
+
+## 1.4(Q3)
+```{r}
+df_means_medians <- data.frame(num_outliers=num_outliers_vect, mean=means_vect,
+t_mean=t_means_vect, median=medians_vect)
+
+
+
+df_means_medians %>%
+pivot_longer(!num_outliers, names_to = "Estimator", values_to = "Value") %>%
+ggplot(aes(x=num_outliers,color=Estimator, linetype=Estimator,y=Value)) +
+geom_line()+xlab("Number of outliers")
+```
+## 1.5(Q1)
+```{r}
+library(ggplot2)
+library(dplyr)
+
+# Assuming you have loaded your "Hawks" data frame
+
+# Group the data by "Species"
+hawk_data <- Hawks %>%
+  group_by(Species)
+
+# Now, let's create the box plot
+ggplot(hawk_data, aes(x = Species, y = Weight)) +
+  geom_boxplot(fill = "white") +
+  labs(
+    title = "Distribution of Hawk Weights by Species",
+    x = "Species",
+    y = "Weight"
+  )
+
+
+```
+
+## 1.5(Q2)
+```{r}
+
+library(dplyr)
+
+# Group the data by "Species" and calculate quantiles
+quantiles_data <- Hawks %>%
+  group_by(Species) %>%
+  summarize(
+    Q1 = quantile(Weight, 0.25, na.rm = TRUE),
+    Median = median(Weight, na.rm = TRUE),
+    Q3 = quantile(Weight, 0.75, na.rm = TRUE)
+  )
+quantiles_data
+```
+## 1.5(Q3)
+```{r}
+num_outliers <- function(sample_data){
+    Q1 = quantile(sample_data, 0.25)
+    Q2 = quantile(sample_data, 0.75)
+    IQR = Q2 - Q1
+    X1 = Q1 - 1.5 * IQR
+    X2 = Q2 + 1.5 * IQR
+    x = 0
+    for(i in sample_data){
+      if(i < X1 | i > X2){
+        x = x + 1
+       # print(i)
+      }
+    }
+   # num_outliers <- sum(sample_data < X1 | sample_data > X2)
+  return(x)
+  }
+num_outliers(c(0, 40,60,185))
+```
+## 1.5(Q3)
+```{r}
+outliers_summary <- Hawks %>%
+  group_by(Species) %>%
+  summarise(num_outliers_weight = num_outliers(Weight))
+
+# Print the result
+print(outliers_summary)
+
+```
+
+
+
+
+
+
+
