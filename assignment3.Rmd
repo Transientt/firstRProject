@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ##1
 
-```{r cars}
+```{r }
 library(tidyverse)
 library(Stat2Data)
 data("Hawks")
@@ -22,7 +22,7 @@ head(Hawks)
 
 
 ## 1.1(Q1)
-```{r cars}
+```{r}
 HawksTail<-Hawks$Tail
 head(HawksTail)
 sample_mean <- mean(HawksTail)
@@ -365,18 +365,34 @@ ggplot(data = Hawks_grouped, aes(x = Tail, y = Weight, color = Species)) +
 
 ## 3(Q5)
 ```{r}
+library(ggplot2)
+library(dplyr)
+
+# Assuming you have the "Hawks" dataset
+# Replace 'your_data' with the actual dataset name
+
+# Group the data by the "Species" column
+Hawks_grouped <- Hawks %>%
+  group_by(Species)
+
+# Create the scatter plot with trend lines and facets, and different colors
+plot <- ggplot(data = Hawks_grouped, aes(x = Tail, y = Weight, color = Species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +  # Add trend lines
+  labs(x = "Tail", y = "Weight") +
+  ggtitle("Scatter Plot with Trend Lines for Hawks")
+
 # Identify the rows with the heaviest hawks within each species
 heaviest_hawks_data <- Hawks_grouped %>%
   filter(Weight == max(Weight))
 
 # Add the annotation for the heaviest hawk within each species
 highlighted_points <- plot +
-  geom_text(data = heaviest_hawks, aes(x = 40, y = MaxWeight, 
-            label = paste("Heaviest Hawk\nWeight:", MaxWeight)), 
+  geom_text(data = heaviest_hawks_data, aes(x = Tail, y = Weight, 
+            label = paste("Heaviest Hawk\nWeight:", max(Weight))), 
             hjust = 1.5, vjust = 0, size = 4, color = "black") +
   geom_point(data = heaviest_hawks_data, aes(x = Tail, y = Weight, color = Species), size = 3)
 
 print(highlighted_points)
-
 
 ```
