@@ -206,6 +206,7 @@ quantiles_data
 ## 1.5(Q3)
 ```{r}
 num_outliers <- function(sample_data){
+    sample_data <- sample_data[!is.na(sample_data)]
     Q1 = quantile(sample_data, 0.25)
     Q2 = quantile(sample_data, 0.75)
     IQR = Q2 - Q1
@@ -223,7 +224,7 @@ num_outliers <- function(sample_data){
   }
 num_outliers(c(0, 40,60,185))
 ```
-## 1.5(Q3)
+## 1.5(Q4)
 ```{r}
 outliers_summary <- Hawks %>%
   group_by(Species) %>%
@@ -233,10 +234,149 @@ outliers_summary <- Hawks %>%
 print(outliers_summary)
 
 ```
+## 1.6(Q1)
+```{r}
+# Compute the covariance between Weight and Wing
+cleaned_data <- na.omit(Hawks)
+covariance <- cov(cleaned_data$Weight, cleaned_data$Wing)
+cat("Covariance between Weight and Wing:", covariance, "\n")
+
+# Compute the correlation between Weight and Wing
+correlation <- cor(cleaned_data$Weight, cleaned_data$Wing)
+cat("Correlation between Weight and Wing:", correlation, "\n")
+```
+## 1.6(Q2)
+```{r}
+a = 2.4
+b = 7.1
+c = -1
+d = 3
+# Create new variables by applying the transformation
+cleaned_data$Weight_transformed <- a * cleaned_data$Weight + b
+cleaned_data$Wing_transformed <- c * cleaned_data$Wing + d
+# Compute the covariance between the transformed variables
+covariance_transformed <- cov(cleaned_data$Weight_transformed, cleaned_data$Wing_transformed)
+# Print the result
+cat("Covariance between transformed Weight and transformed Wing:", covariance_transformed, "\n")
+
+correlation_transformed <- cor(cleaned_data$Weight, cleaned_data$Wing)
+
+cat("correlation between transformed Weight and transformed Wing:", correlation_transformed, "\n")
 
 
 
+```
+
+## 2.1(Q1)
+a random experiment is a process with uncertain outcomes, the sample space is the set of all possible outcomes, and events are subsets of the sample space that describe specific occurrences or observations. These concepts are fundamental to the study of probability and statistics and are used to model and analyze uncertainty and randomness in various real-world situations.
+
+## 2.1(Q2)
+
+The event is that the sum of twice dice is 7.
+
+E = {(1, 6), (2, 5), (3, 4), (4, 3), (5, 2), (6, 1)}
+
+there are a lot of events. We can't list them totally
+
+Yes.
+
+## 2.2(Q1)
+
+1.
+A ∪ B = {1, 2, 3, 4, 6}
+A ∪ C = {1, 2, 3, 4, 5, 6}
+
+2.
+A ∩ B = {2}
+A ∩ C = ∅
+
+3.
+A\B = {1, 3}
+A\C = {1, 2, 3}
+
+4.
+No
+Yes
+
+5.
+Yes
+
+6.
+{1, 2, 3} and {4, 5, 6}
+{1, 2}, {3, 4}, and {5, 6}
 
 
+## 2.2(Q3)
+
+|E| = 2^k
+
+## 2.2(Q4)
+1.
+∅
+2.
+S1   ∪    S2     ∪      S3        ∪   S4
 
 
+## 3(Q3)
+```{r}
+
+# Load the ggplot2 and dplyr libraries if not already loaded
+library(ggplot2)
+library(dplyr)
+
+# Assuming you have the "Hawks" dataset
+# Replace 'your_data' with the actual dataset name
+
+# Group the data by the "Species" column
+Hawks_grouped <- Hawks %>%
+  group_by(Species)
+
+# Create the scatter plot with different colors for each species
+ggplot(data = Hawks_grouped, aes(x = Tail, y = Weight, color = Species)) +
+  geom_point() +
+  labs(x = "Tail", y = "Weight") +
+  ggtitle("Scatter Plot of Tail vs. Weight for Hawks")
+
+```
+
+## 3(Q4)
+```{r}
+# Load the ggplot2 and dplyr libraries if not already loaded
+library(ggplot2)
+library(dplyr)
+
+# Assuming you have the "Hawks" dataset
+# Replace 'your_data' with the actual dataset name
+
+# Group the data by the "Species" column
+Hawks_grouped <- Hawks %>%
+  group_by(Species)
+
+# Create the scatter plot with trend lines and facets
+ggplot(data = Hawks_grouped, aes(x = Tail, y = Weight, color = Species)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, fullrange = TRUE) +  # Add trend lines
+  labs(x = "Tail", y = "Weight") +
+  ggtitle("Scatter Plot with Trend Lines for Hawks") +
+  facet_wrap(~ Species, scales = "free")
+
+
+```
+
+## 3(Q5)
+```{r}
+# Identify the rows with the heaviest hawks within each species
+heaviest_hawks_data <- Hawks_grouped %>%
+  filter(Weight == max(Weight))
+
+# Add the annotation for the heaviest hawk within each species
+highlighted_points <- plot +
+  geom_text(data = heaviest_hawks, aes(x = 40, y = MaxWeight, 
+            label = paste("Heaviest Hawk\nWeight:", MaxWeight)), 
+            hjust = 1.5, vjust = 0, size = 4, color = "black") +
+  geom_point(data = heaviest_hawks_data, aes(x = Tail, y = Weight, color = Species), size = 3)
+
+print(highlighted_points)
+
+
+```
