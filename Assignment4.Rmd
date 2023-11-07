@@ -12,19 +12,6 @@ library(tidyverse)
 ```
 
 # 1. Probability theory
-(Q1)
-P({a}) = 0.3
-P({b}) = 0.3
-P({c}) = 0.4
-
-(Q3)
-Define a sample space Ω = {a, b} and there are some events:
-S1 = {a}
-S2 = {b}
-S3 = {a, b}
-S4 = ∅
-we have already known P(Ω)=P(S)
-
 
 
 
@@ -32,15 +19,166 @@ we have already known P(Ω)=P(S)
 
 ## 2.1 (Q1)
 
-....
+```{r}
+choose(8,3)
+
+```
+
 
 ## 2.1 (Q2)
 ....
+```{r}
+prob_red_spheres <- function(z) {
+  n <- 22  # 总球数
+  p_red <- 0.3  # 红球的概率（请根据实际情况调整）
 
+  # 计算二项分布概率
+  probability <- dbinom(z, n, p_red)
+
+  return(probability)
+}
+
+# 测试函数
+result <- prob_red_spheres(10)
+cat("The probability of getting 10 red spheres out of 22 selected is:", result, "\n")
+```
+
+## 2.1 (Q3)
+```{r}
+# 创建一个数据框
+prob_by_num_reds <- data.frame(
+  num_reds = 1:22,  # 包含数字1到22的列
+  prob = sapply(1:22, prob_red_spheres)  # 计算与选择相应数量的红球相关的概率
+)
+
+# 显示数据框的前3行
+head(prob_by_num_reds, 3)
+
+```
 ....
+## 2.1 (Q4)
+```{r}
+# 加载ggplot2库
+library(ggplot2)
 
+# 创建图表
+plot <- ggplot(prob_by_num_reds, aes(x = num_reds, y = prob)) +
+  geom_line() +
+  labs(title = "Probability of Selecting Red Spheres",
+       x = "Number of Red Spheres",
+       y = "Probability") +
+  theme_minimal()
+
+# 显示图表
+print(plot)
+```
+
+## 2.1 (Q5)
+```{r}
+sample(10, 22, replace=TRUE)
+## case 1: Setting the random seed just once
+set.seed(0)
+
+for(i in 1:5){
+print(sample(100,5,replace=FALSE))
+# The result may well differ every time
+}
+
+```
+```{r}
+## case 2: Resetting the random seed every time
+set.seed(1)
+print(sample(100,5,replace=FALSE))
+set.seed(1)
+print(sample(100,5,replace=FALSE))
+set.seed(1)
+print(sample(100,5,replace=FALSE))
+# The result should not change
+```
+```{r}
+## case 3: reproducing case 1 if we set a random seed at the beginning.
+set.seed(0)
+for(i in 1:5){
+print(sample(100,5,replace=FALSE))
+} # The result will be 5 samples exactly the same as in case 1 (why?).
+
+
+```
+```{r}
+num_trials<-1000 # set the number of trials
+set.seed(0) # set the random seed
+sampling_with_replacement_simulation<-data.frame(trial=1:num_trials) %>%
+mutate(sample_balls = map(.x=trial, ~sample(10,22, replace = TRUE)))
+# generate collection of num_trials simulations
+# in the above code we have used "~" which defines an anonymous function
+sampling_with_replacement_simulation <- sampling_with_replacement_simulation %>%
+  mutate(num_reds = map_dbl(sample_balls, ~sum(.x <= 3)))
+sampling_with_replacement_simulation
+```
+## 2.1 (Q6)
+```{r}
+num_reds_in_simulation<-sampling_with_replacement_simulation %>%
+pull(num_reds)
+# we extract a vector corresponding to the number of reds in each trial
+prob_by_num_reds<-prob_by_num_reds %>%
+mutate(predicted_prob=map_dbl(.x=num_reds,~sum(num_reds_in_simulation==.x))/num_trials)
+
+# add a column which gives the number of trials with a given number of reds
+
+```
+
+## 2.1 (Q7)
+```{r}
+prob_by_num_reds %>%
+rename(TheoreticalProbability=prob, EstimatedProbability=predicted_prob) %>%
+pivot_longer(cols=c("EstimatedProbability","TheoreticalProbability"),
+names_to="Type",values_to="count") %>%
+ggplot(aes(num_reds,count)) +
+geom_line(aes(linetype=Type, color=Type)) + geom_point(aes(color=Type)) +
+scale_linetype_manual(values = c("solid", "dashed"))+
+theme_bw() + xlab("Number of reds") + ylab("Probabilities")
+```
 ## 2.2 (Q1)
+```{r}
+# 设置随机种子
+set.seed(123)
 
+# 设置模拟试验次数和样本大小
+num_trials <- 10000  # 你可以根据需要选择不同的次数
+sample_size <- 10
+
+# 创建一个数据框来保存模拟结果
+simulation_results <- data.frame()
+
+# 进行模拟试验
+for (i in 1:num_trials) {
+  # 从100个球中抽取大小为10的样本（不放回）
+  sample_balls <- sample(1:100, sample_size, replace = FALSE)
+  
+  # 计算样本中的红球、绿球和蓝球的数量
+  red_count <- sum(sample_balls <= 50)
+  green_count <- sum(sample_balls > 50 & sample_balls <= 80)
+  blue_count <- sum(sample_balls > 80)
+  
+  # 计算三种颜色中数量的最小值
+  min_count <- pmin(red_count, green_count, blue_count)
+  
+  # 判断是否有颜色缺失
+  color_missing <- min_count == 0
+  
+  # 将结果添加到数据框
+  simulation_results <- rbind(simulation_results, data.frame(ColorMissing = color_missing))
+}
+
+# 计算颜色缺失的概率
+probability_color_missing <- mean(simulation_results$ColorMissing)
+
+# 打印结果
+cat("Probability of one or more colors missing from selection:", probability_color_missing, "\n")
+
+
+
+```
 .....
 
 
