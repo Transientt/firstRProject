@@ -1,0 +1,47 @@
+---
+title: "Assignment 4"
+author: "Insert My Name"
+date: "2022-10-16"
+output: html_document # you can change to other output format if you want
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+
+```
+
+# 1. Probability theory
+(Q1)
+P({a}) = 0.3
+P({b}) = 0.3
+P({c}) = 0.4
+
+(Q3)
+Define a sample space Ω = {a, b} and there are some events:
+S1 = {a}
+S2 = {b}
+S3 = {a, b}
+S4 = ∅
+we have already known P(Ω)=P(S)
+
+
+
+
+# 2. Finite probability spaces
+
+## 2.1 (Q1)
+
+....
+
+## 2.1 (Q2)
+....
+
+....
+
+## 2.2 (Q1)
+
+.....
+
+
+

@@ -1,0 +1,343 @@
+---
+title: "R Markdown Math formulas and Symbols Examples"
+author: "Dr. Rihuan Ke"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+This document aims to provide examples of writing symbols and formulas in R-Markdown.
+
+
+In each example, both the output and its corresponding source code are displayed. 
+
+
+Please note that:
+
+  1. The examples are not suggesting unique choice of notations you need to use, as the notations vary in different subjects/setting.  
+  2. You are not required to know or write all the symbols/codes displayed below, but this document can assist you in checking the source code for specific symbols/formulas when needed.
+
+
+
+
+## Examples
+
+This is an inline equation $a = b+c$. This is a displayed equation
+\[
+a = b + c.
+\]
+Note that the displayed equation is on a line by itself. 
+```{verbatim}
+This is an inline equation $a = b+c$. This is a displayed equation
+\[
+a = b + c.
+\]
+Note that the displayed equation is on a line by itself. 
+```
+
+
+
+
+\
+
+This is italic ***abcd***, and this is boldface **abcd**
+```{verbatim}
+This is italic ***abcd***, and this is boldface **abcd**
+```
+
+
+\
+
+This is a list
+ 
+ 1. item 1
+ 2. item 2
+    - item
+    - item
+```{verbatim}
+This is a list
+ 
+ 1. item 1
+ 2. item 2
+    - item
+    - item
+```
+
+\
+
+
+the set of all real numbers $\mathbb{R}$
+
+the set of all natural numbers $\mathbb{N}$
+
+the set of all rational numbers $\mathbb{Q}$
+
+```{verbatim}
+the set of all real numbers $\mathbb{R}$
+
+the set of all natural numbers $\mathbb{N}$
+
+the set of all rational numbers $\mathbb{Q}$
+```
+
+
+
+\
+
+$X_1, \cdots, X_n$
+```{verbatim}
+$X_1, \cdots, X_n$
+```
+
+
+$a+b, \quad a/b, \quad, a^b, \quad, a \cdot b, \quad  a \times b$
+```{verbatim}
+$a+b, \quad a/b, \quad, a^b, \quad, a \cdot b, \quad  a \times b$
+```
+
+
+$a = b, \quad a \neq b, \quad a < b, \quad a \leq b, \quad a > b, \quad a \geq b.$
+```{verbatim}
+$a = b, \quad a \neq b, \quad a < b, \quad a \leq b, \quad a > b, \quad a \geq b.$
+```
+
+
+$\alpha, \beta, \mu, \lambda, \tau, \xi, \epsilon$
+```{verbatim}
+$\alpha, \beta, \mu, \lambda, \tau, \xi, \epsilon$
+```
+
+
+$\frac{a}{b}, \ \frac{f_1(a)}{f_2(b) + f_3(c)}$
+```{verbatim}
+$\frac{a}{b}, \ \frac{f_1(a)}{f_2(b) + f_3(c)}$
+```
+
+
+$a_b, \quad a^b, \quad a^{10}, \quad b^{-1}$
+```{verbatim}
+$a_b, \quad a^b, \quad a^{10}, \quad b^{-1}$
+```
+
+
+$b^{1/2} = \sqrt{b}$
+```{verbatim}
+$b^{1/2} = \sqrt{b}$
+```
+
+
+$\pi$
+```{verbatim}
+$\pi$
+```
+
+
+$[a,b]$
+```{verbatim}
+$[a,b]$
+```
+
+$\tilde{X}, \quad \hat{X}, \quad \overline{X}$ 
+```{verbatim}
+$\tilde{X}, \quad \hat{X}, \quad \overline{X}$ 
+```
+
+
+$A \cap B, \quad A \cup B$
+```{verbatim}
+$A \cap B, \quad A \cup B$
+```
+
+
+$\cap_{k=1}^K A_k, \quad \cup_{k=1}^K A_k$
+```{verbatim}
+$\cap_{k=1}^K A_k, \quad \cup_{k=1}^K A_k$
+```
+
+
+$A \backslash B$
+```{verbatim}
+$A \backslash B$
+```
+
+
+$a \in \mathbb{R}, \quad a \notin \mathbb{R}$
+```{verbatim}
+$a \in \mathbb{R}, \quad a \notin \mathbb{R}$
+```
+
+
+
+Empty set $\emptyset$ 
+```{verbatim}
+Empty set $\emptyset$ 
+```
+
+$\Omega$
+```{verbatim}
+$\Omega$
+```
+
+
+$A^c$
+```{verbatim}
+$A^c$
+```
+
+$A \subseteq B$
+```{verbatim}
+$A \subseteq B$
+```
+
+$A_1, A_2, \cdots, A_K$
+```{verbatim}
+$A_1, A_2, \cdots, A_K$
+```
+
+
+$\{w_1, w_2, \cdots, w_K\}$
+```{verbatim}
+$\{w_1, w_2, \cdots, w_K\}$
+```
+
+
+$A_i$, $A_{i_1}$
+```{verbatim}
+$A_i$, $A_{i_1}$
+```
+
+
+$\mathbf{1}_A$
+```{verbatim}
+$\mathbf{1}_A$
+```
+
+
+
+$\{(a,b) | a + b = 3 \}$
+```{verbatim}
+$\{(a,b) | a + b = 3 \}$
+```
+
+
+
+$A:=\{1,2\}$
+```{verbatim}
+$A:=\{1,2\}$
+```
+
+
+$X_i < \text{q25} - 1.5 \times \text{IQR}, \quad \text{or} \quad X_i > \text{q75} + 1.5 \times \text{IQR}$
+```{verbatim}
+$X_i < \text{q25} - 1.5 \times \text{IQR}, \quad \text{or} \quad X_i > \text{q75} + 1.5 \times \text{IQR}$
+```
+
+
+$\mathcal{E}, \ \mathcal{B}$
+```{verbatim}
+$\mathcal{E}, \ \mathcal{B}$
+```
+
+
+$\mathbb{P}, \ \mathbb{E}$
+```{verbatim}
+$\mathbb{P}, \ \mathbb{E}$
+```
+
+
+${\rm Cov}(X, Y), \ {\rm Var}(X)$
+```{verbatim}
+${\rm Cov}(X, Y), \ {\rm Var}(X)$
+```
+
+
+$\sigma(X)$
+```{verbatim}
+$\sigma(X)$
+```
+
+
+$\mathbb{P}(\{0,1,2,3\}) = 1$
+```{verbatim}
+$\mathbb{P}(\{0,1,2,3\}) = 1$
+```
+
+
+$\sum_{i=0}^\infty a_i, \quad \prod_{i=0}^\infty a_i$
+```{verbatim}
+$\sum_{i=0}^\infty a_i, \quad \prod_{i=0}^\infty a_i$
+```
+
+
+${{n}\choose{k}} = \frac{n!}{k!(n-k)!}$
+```{verbatim}
+${{n}\choose{k}} = \frac{n!}{k!(n-k)!}$
+```
+
+
+
+\[
+F(x) = \begin{cases}
+1 &  x = 0 \\
+3 & x = 1 \\
+\end{cases}
+\]
+```{verbatim}
+\[
+F(x) = \begin{cases}
+1 &  x = 0 \\
+3 & x = 1 \\
+\end{cases}
+\]
+```
+
+
+$\int_a^b f(x) dx$
+```{verbatim}
+$\int_a^b f(x) dx$
+```
+
+$X \sim \mathcal{N}(\mu, \sigma^2)$
+```{verbatim}
+$X \sim \mathcal{N}(\mu, \sigma^2)$
+```
+
+${\rm lim}_{n \rightarrow \infty} f(n)$
+```{verbatim}
+${\rm lim}_{n \rightarrow \infty} f(n)$
+```
+
+${\rm log} X, e^X$
+```{verbatim}
+${\rm log} X, e^X$
+```
+
+
+$\frac{\partial}{\partial x} f, \frac{\partial^2}{\partial x^2} f$
+```{verbatim}
+$\frac{\partial}{\partial x} f, \frac{\partial^2}{\partial x^2} f$
+```
+
+$100 \%$
+```{verbatim}
+$100 \%$
+```
+
+
+$\| A \|_2$
+```{verbatim}
+$\| A \|_2$
+```
+
+
+
+
+
+
+
+
+
