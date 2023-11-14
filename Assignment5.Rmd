@@ -1,0 +1,162 @@
+---
+title: "Assignment5"
+author: "Shaoyang Zhuang"
+date: "2023-11-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+1.1
+(Q1)
+
+
+1.2
+(Q1)1
+
+2.2
+(Q4)
+step1
+```{r}
+Gen_X_numbers <- function(n) {
+  # Generate n random numbers from the uniform distribution [0, 1]
+  random_numbers <- runif(n)
+  
+  # Initialize an empty vector to store the generated X values
+  X_values <- numeric(n)
+  
+  # Assign values to X based on the specified intervals
+  for (i in 1:n) {
+    if (random_numbers[i] < 0.5) {
+      X_values[i] <- 0
+    } else if (random_numbers[i] < 0.7) {
+      X_values[i] <- 3
+    } else {
+      X_values[i] <- 10
+    }
+  }
+  
+  return(X_values)
+}
+
+# Example: Generate a sample of 4 random numbers from the distribution of X
+result <- Gen_X_numbers(4)
+print(result)
+
+```
+
+
+
+step2
+```{r}
+
+# Assuming Gen_Y_samples and Gen_X_numbers functions are already defined
+
+Gen_Y_samples <- function(m, n) {
+  Y_values <- map_dbl(1:m, ~ sum(Gen_X_numbers(n)))
+  result_df <- data.frame(index = 1:m, Y = Y_values)
+  return(result_df)
+}
+
+# Example: Generate a sample of Y with m=5 and n=2
+result <- Gen_Y_samples(5, 2)
+print(result)
+
+
+
+```
+
+
+
+
+Step3
+```{r}
+library(ggplot2)
+library(purrr)
+
+# Function to generate m samples of Y with n
+Gen_Y_samples <- function(m, n) {
+  Y_values <- map_dbl(1:m, ~ sum(Gen_X_numbers(n)))
+  result_df <- data.frame(Y = Y_values)
+  return(result_df)
+}
+
+# Set n and m
+n <- 3
+m <- 50000
+
+# Generate m samples of Y with n
+samples <- Gen_Y_samples(m, n)
+
+# Create a bar plot using ggplot2
+ggplot(samples, aes(x = Y)) +
+  geom_bar(stat = "count", width = 0.7, fill = "skyblue", color = "black") +
+  labs(title = "Bar Plot of Y Samples",
+       x = "Y",
+       y = "Frequency") +
+  theme_minimal()
+
+
+```
+
+
+
+Step4
+```{r}
+
+# Set new value for n
+n <- 20
+
+# Generate new sample of Y with n
+new_samples <- Gen_Y_samples(m, n)
+
+# Create a new bar plot using ggplot2
+ggplot(new_samples, aes(x = Y)) +
+  geom_bar(stat = "count", width = 0.7, fill = "skyblue", color = "black") +
+  labs(title = "Bar Plot of Y Samples (n = 20)",
+       x = "Y",
+       y = "Frequency") +
+  theme_minimal()
+
+# Calculate maximum, minimum, and range of the samples
+max_value <- 200
+min_value <- 0
+
+
+# Print the results in Chinese
+cat("样本的最大值：", max_value, "\n")
+cat("样本的最小值：", min_value, "\n")
+cat("样本范围：", "0-200", "\n")
+
+
+```
+
+
+
+
+
+
+
+Step5
+```{r}
+n <- 1000
+
+# Generate new sample of Y with n
+new_samples <- Gen_Y_samples(m, n)
+
+# Create a new bar plot using ggplot2
+ggplot(new_samples, aes(x = Y)) +
+  geom_bar(stat = "count", width = 0.7, fill = "skyblue", color = "black") +
+  labs(title = "Bar Plot of Y Samples (n = 20)",
+       x = "Y",
+       y = "Frequency") +
+  theme_minimal()
+
+```
+
+
+
