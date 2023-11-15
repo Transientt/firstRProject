@@ -1,0 +1,137 @@
+---
+title: "Assignment6"
+author: "Shaoyang Zhuang"
+date: "2023-11-14"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+1.1(Q2)
+```{r}
+set.seed(0)
+n <- 1000
+sample_X <- data.frame(U=runif(n)) %>%
+mutate(X=case_when(
+(0<=U)&(U<0.25)~3,
+(0.25<=U)&(U<0.5)~10,
+(0.5<=U)&(U<=1)~0)) %>%
+pull(X)
+
+```
+
+
+(Q3)
+```{r}
+sample_X_0310 <- function(alpha, beta, n) {
+  # Generate n samples of X with specified probabilities
+  X_samples <- sample(c(0, 3, 10), size = n, replace = TRUE, prob = c(1 - alpha - beta, alpha, beta))
+  return(X_samples)
+}
+
+# Example usage:
+alpha <- 0.25
+beta <- 0.25
+n <- 10
+
+result <- sample_X_0310(alpha, beta, n)
+print(result)
+
+```
+Q4
+```{r}
+# 定义函数
+sample_X_0310 <- function(alpha, beta, n) {
+  X_samples <- sample(c(0, 3, 10), size = n, replace = TRUE, prob = c(1 - alpha - beta, alpha, beta))
+  return(X_samples)
+}
+
+# 设置参数
+alpha <- 1/2
+beta <- 1/10
+n <- 10000
+
+# 生成样本
+sample_data <- sample_X_0310(alpha, beta, n)
+# 计算理论期望
+theoretical_expectation <- 0 * (1 - alpha - beta) + 3 * alpha + 10 * beta
+
+# 计算样本平均值
+sample_average <- mean(sample_data)
+
+# 打印结果
+cat("理论期望 (E(X)): ", theoretical_expectation, "\n")
+cat("样本平均值: ", sample_average, "\n")
+
+
+```
+
+
+Q5
+```{r}
+# 计算样本方差
+sample_variance <- var(sample_data)
+
+# 计算总体方差 (用你的表达式替换这里的 Var_X)
+Var_X <- mean(sample_data^2) - mean(sample_data)^2
+
+# 打印结果
+cat("样本方差: ", sample_variance, "\n")
+cat("总体方差 (Var(X)): ", Var_X, "\n")
+
+# 比较样本方差和总体方差
+cat("样本方差与总体方差的比较: ", ifelse(sample_variance == Var_X, "相等", "不相等"), "\n")
+
+```
+Q6
+```{r}
+# 定义样本生成函数
+sample_X_0310 <- function(alpha, beta, n) {
+  X_samples <- sample(c(0, 3, 10), size = n, replace = TRUE, prob = c(1 - alpha - beta, alpha, beta))
+  return(X_samples)
+}
+
+# 设置参数
+n <- 100
+alpha <- 1/10
+beta_values <- seq(0, 9/10, by = 0.01)
+
+# 创建数据框
+df <- tibble(beta = beta_values) %>%
+  mutate(
+    sample_X = map(beta, ~sample_X_0310(alpha, ., n)),
+    samplemean = map_dbl(sample_X, ~mean(.)),
+    Expectation = 3 * alpha + 10 * .)
+  
+# 打印数据框
+print(df)
+
+```
+Q7
+```{r}
+library(ggplot2)
+
+# 创建图形，指定 x 为离散刻度
+ggplot(df, aes(x = factor(beta))) +
+  geom_line(aes(y = samplemean, color = "Sample Mean"), size = 1) +
+  geom_line(aes(y = Expectation, color = "Expectation"), linetype = "dashed", size = 1) +
+  labs(title = "Sample Averages and E(X) as a Function of Beta",
+       x = "Beta",
+       y = "Value") +
+  scale_color_manual(values = c("Sample Mean" = "blue", "Expectation" = "red")) +
+  theme_minimal()
+
+```
+
+
+
+
+
+
+
+
+
+
